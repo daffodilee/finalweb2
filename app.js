@@ -15,12 +15,18 @@ app.use(session({
 }));
 
 const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'node_postgres',
-    password: '523658', 
+    user: 'web2final_user',
+    host: 'dpg-cnj1h2da73kc73ei119g-a.oregon-postgres.render.com',
+    database: 'web2final',
+    password: 'rtBEUuGmKbHwTnMjkaJLVbfSyY7tLfkf', 
     port: 5432, 
+    ssl: {
+        rejectUnauthorized: false
+    }
     });
+
+
+
 
 // Middleware to authenticate user's session
 const isAuthenticated = (req, res, next) => {
