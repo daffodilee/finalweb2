@@ -1,0 +1,67 @@
+/* styles.css */
+
+/* Body styles */
+body {
+
+    background-color: #f5f5f5; /* Light gray */
+}
+
+/* Container styles */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #ffffff; /* White */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+/* Form styles */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    background-color: #f2f2f2; /* Light gray */
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background-color: #4c4c4c; /* Coral red */
+    color: #ffffff; /* White */
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #4d4d4d; /* Darker coral red on hover */
+}
+
+/* Link styles */
+a {
+    color: #2ea67e; /* Vivid blue */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #606060; /* Darker blue on hover */
+}
+
+/* Task list styles */
+#task-list li {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #80e5ff; /* Sky blue */
+    border-radius: 4px;
+}

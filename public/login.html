@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <title>Login</title>
+  <style>
+    .container {
+      max-width: 600px; /* Set max-width to make the container smaller */
+      font-family: 'Montserrat', sans-serif; /* Set font-family to Montserrat */
+    }
+  </style>
+</head>
+<body>
+<div class="container mt-5">
+  <h1>Welcome to our Login Page</h1>
+  <form action="/login" method="POST">
+    <div class="form-group">
+      <label for="email">Email Address:</label>
+      <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" class="form-control" id="password" name="password" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+  <p>If you don't have an account, <a href="/register">Register here</a>.</p>
+</div>
+</body>
+</html>

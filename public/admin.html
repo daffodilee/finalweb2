@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+  <title>Admin Panel</title>
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif; /* Set font-family to Montserrat for the entire page */
+    }
+    .container {
+      max-width: 1200px; /* Make the container bigger */
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Admin Panel</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto"> <!-- Align navbar items to the right -->
+        <li class="nav-item">
+          <a class="nav-link" href="/admin-dashboard">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin">Admin Panel</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+
+
+<div class="container mt-5">
+  <h1>Admin Panel</h1>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody id="userTableBody">
+    <!-- User data will be dynamically inserted here -->
+    </tbody>
+  </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(() => {
+    // Function to fetch users from server and populate table
+    function fetchUsers() {
+      $.ajax({
+        url: '/admin/users', // Update with your server endpoint
+        type: 'GET',
+        success: function(users) {
+          // Clear existing table rows
+          $('#userTableBody').empty();
+          // Populate table with user data
+          users.forEach(function(user) {
+            var row = `<tr>
+                          <td>${user.id}</td>
+                          <td>${user.username}</td>
+                          <td>${user.email}</td>
+                          <td>
+                            <select class="form-control role-select" data-user-id="${user.id}">
+                              <option value="user" ${user.role === 'user' ? 'selected' : ''}>User</option>
+                              <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
+                            </select>
+                          </td>
+                          <td>
+                            <button class="btn btn-primary update-role-btn" data-user-id="${user.id}">Update Role</button>
+                            <button class="btn btn-danger delete-user-btn" data-user-id="${user.id}">Delete User</button>
+                          </td>
+                        </tr>`;
+            $('#userTableBody').append(row);
+          });
+        },
+        error: function(xhr, status, error) {
+          console.error(error);
+          alert('An error occurred while fetching users');
+        }
+      });
+    }
+
+    // Fetch users when the page loads
+    fetchUsers();
+
+    // Handle updating user role
+    $(document).on('click', '.update-role-btn', function() {
+      const userId = $(this).data('user-id');
+      const newRole = $(this).closest('tr').find('.role-select').val();
+
+      $.ajax({
+        url: `/admin/users/${userId}`,
+        type: 'PUT',
+        data: { role: newRole },
+        success: function(response) {
+          alert(response);
+          // Optionally, update the UI to reflect the role change
+          fetchUsers(); // Reload user data after role update
+        },
+        error: function(xhr, status, error) {
+          console.error(error);
+          alert('An error occurred while updating user role');
+        }
+      });
+    });
+
+    // Handle deleting user
+    $(document).on('click', '.delete-user-btn', function() {
+      if (confirm('Are you sure you want to delete this user?')) {
+        const userId = $(this).data('user-id');
+
+        $.ajax({
+          url: `/admin/users/${userId}`,
+          type: 'DELETE',
+          success: function(response) {
+            alert(response);
+            // Optionally, update the UI to remove the deleted user
+            fetchUsers(); // Reload user data after deletion
+          },
+          error: function(xhr, status, error) {
+            console.error(error);
+            alert('An error occurred while deleting user');
+          }
+        });
+      }
+    });
+  });
+</script>
+</body>
+</html>

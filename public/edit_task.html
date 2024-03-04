@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Task</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif; /* Use Montserrat font */
+        }
+        .btn-gray {
+            background-color: gray; /* Change button color to gray */
+            color: white; /* Change text color to white */
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Admin Panel</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto"> <!-- Align navbar items to the right -->
+            <li class="nav-item">
+              <a class="nav-link" href="/admin-dashboard">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/admin">Admin Panel</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    
+<div class="container mt-5">
+    <h1>Edit Task</h1>
+    <!-- Form to edit task details -->
+    <form id="edit-task-form">
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" class="form-control" id="title" name="title">
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea class="form-control" id="description" name="description"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="deadline">Deadline:</label>
+            <input type="datetime-local" class="form-control" id="deadline" name="deadline">
+        </div>
+        <button type="submit" class="btn btn-gray">Save Changes</button> <!-- Add btn-gray class to change button color -->
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(() => {
+        // Get the taskId from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const taskId = urlParams.get('taskId');
+
+        // Fetch task details using taskId
+        $.get(`/admin-dashboard/tasks/${taskId}`, (task) => {
+            // Populate form fields with task details
+            $('#title').val(task.title);
+            $('#description').val(task.description);
+            const deadline = new Date(task.deadline).toISOString().slice(0, -8);
+            $('#deadline').val(deadline);
+        });
+
+        // Handle form submission to update task details
+        $('#edit-task-form').submit((event) => {
+            event.preventDefault();
+            const formData = $(event.currentTarget).serialize();
+            $.ajax({
+                url: `/admin-dashboard/tasks/${taskId}`,
+                type: 'PUT',
+                data: formData,
+                success: (response) => {
+                    alert('Task updated successfully');
+                    // Optionally, redirect or update UI
+                },
+                error: (xhr, status, error) => {
+                    console.error(error);
+                    alert('An error occurred while updating task');
+                }
+            });
+        });
+    });
+
+</script>
+</body>
+</html>
